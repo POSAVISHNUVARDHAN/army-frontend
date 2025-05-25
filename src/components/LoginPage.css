@@ -1,0 +1,116 @@
+/* Center form vertically & horizontally */
+.login-wrapper {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* Background: overlay + local image m1.jpg */
+  background:
+    linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url('/public/m2.jpeg') no-repeat center center fixed;
+  background-size: cover;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  animation: bgFadeIn 1.5s ease forwards;
+}
+
+/* Fade-in animation for background */
+@keyframes bgFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Form container */
+.login-form {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 2.5rem 3rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  width: 350px;
+  display: flex;
+  flex-direction: column;
+  animation: formSlideIn 1s ease forwards;
+}
+
+/* Slide-in animation for form */
+@keyframes formSlideIn {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Form heading */
+.login-form h2 {
+  margin-bottom: 2rem;
+  color: #333;
+  text-align: center;
+  letter-spacing: 1.5px;
+  font-weight: 700;
+}
+
+/* Labels */
+.login-form label {
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #555;
+}
+
+/* Inputs and select styling */
+.login-form input,
+.login-form select {
+  padding: 10px 12px;
+  margin-bottom: 1.5rem;
+  border: 1.8px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.login-form input:focus,
+.login-form select:focus {
+  border-color: #764ba2;
+  outline: none;
+}
+
+/* Buttons */
+.login-form button {
+  padding: 12px 0;
+  font-weight: 700;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-login {
+  background-color: #764ba2;
+  color: white;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 10px rgba(118, 75, 162, 0.5);
+}
+
+.btn-login:hover {
+  background-color: #5a3780;
+}
+
+.btn-signup {
+  background-color: transparent;
+  border: 2px solid #764ba2;
+  color: #764ba2;
+  box-shadow: 0 4px 10px rgba(118, 75, 162, 0.3);
+}
+
+.btn-signup:hover {
+  background-color: #764ba2;
+  color: white;
+  box-shadow: 0 6px 15px rgba(118, 75, 162, 0.6);
+}
