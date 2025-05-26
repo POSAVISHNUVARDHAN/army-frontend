@@ -62,7 +62,7 @@ export default function PurchasesPage() {
       return;
     }
 
-    const response = await fetch('http://localhost:5000/api/purchases', {
+    const response = await fetch('https://my-backend-1lb6.onrender.com/api/purchases', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ base, equipment_type, quantity, date }),
@@ -80,7 +80,7 @@ export default function PurchasesPage() {
   const handleDelete = async (equipment_type) => {
     if (!window.confirm(`Delete purchase: ${equipment_type}?`)) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/purchases/${encodeURIComponent(equipment_type)}`, {
+      const res = await fetch(`https://my-backend-1lb6.onrender.com/api/purchases/${encodeURIComponent(equipment_type)}`, {
         method: 'DELETE',
       });
       const result = await res.json();

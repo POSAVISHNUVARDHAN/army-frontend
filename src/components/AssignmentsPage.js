@@ -7,7 +7,7 @@ export default function AssignmentsPage() {
 
   const fetchAssignments = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/assignments');
+      const res = await fetch('https://my-backend-1lb6.onrender.com/api/assignments');
       const data = await res.json();
       setAssignments(data);
     } catch (err) {
@@ -17,7 +17,7 @@ export default function AssignmentsPage() {
 
   const fetchAssets = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/purchases');
+      const res = await fetch('https://my-backend-1lb6.onrender.com/api/purchases');
       const data = await res.json();
       setAssets(data.map(item => item.equipment_type));
     } catch (err) {
@@ -41,7 +41,7 @@ export default function AssignmentsPage() {
       return;
     }
     try {
-      const res = await fetch('http://localhost:5000/api/assignments', {
+      const res = await fetch('https://my-backend-1lb6.onrender.com/api/assignments', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
@@ -61,7 +61,7 @@ export default function AssignmentsPage() {
   const handleDelete = async asset => {
     if (!window.confirm(`Delete assignment for asset "${asset}"?`)) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/assignments/${encodeURIComponent(asset)}`, {
+      const res = await fetch(`https://my-backend-1lb6.onrender.com/api/assignments/${encodeURIComponent(asset)}`, {
         method: 'DELETE',
       });
       const data = await res.json();
@@ -78,7 +78,7 @@ export default function AssignmentsPage() {
   const handleExpended = async asset => {
     if (!window.confirm(`Mark asset "${asset}" as Expended?`)) return;
     try {
-      const res = await fetch('http://localhost:5000/api/assignments/expended', {
+      const res = await fetch('https://my-backend-1lb6.onrender.com/api/assignments/expended', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ asset }),
