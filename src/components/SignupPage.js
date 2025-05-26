@@ -35,7 +35,7 @@ export default function SignupPage() {
     }
 
     try {
-      const res = await fetch('http://localhost:5000/api/signup', {
+      const res = await fetch('https://army-backend1.vercel.app/api/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, email, password, role }),
