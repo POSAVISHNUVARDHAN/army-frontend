@@ -10,7 +10,7 @@ export default function Dashboard() {
 
   const fetchPurchases = async () => {
     try {
-      const res = await fetch('https://army-backend1.vercel.app/api/purchases');
+      const res = await fetch('https://my-backend-1lb6.onrender.com/api/purchases');
       const data = await res.json();
       setPurchases(data);
     } catch (err) {
@@ -20,7 +20,7 @@ export default function Dashboard() {
 
   const fetchTransferIn = async () => {
     try {
-      const res = await fetch('https://army-backend1.vercel.app/api/transferin');
+      const res = await fetch('https://my-backend-1lb6.onrender.com/api/transferin');
       const data = await res.json();
       setTransferIn(data);
     } catch (err) {
@@ -30,7 +30,7 @@ export default function Dashboard() {
 
   const fetchTransferOut = async () => {
     try {
-      const res = await fetch('https://army-backend1.vercel.app/api/transferout');
+      const res = await fetch('https://my-backend-1lb6.onrender.com/api/transferout');
       const data = await res.json();
       setTransferOut(data);
     } catch (err) {
@@ -40,7 +40,7 @@ export default function Dashboard() {
 
   const fetchAssignments = async () => {
     try {
-      const res = await fetch('https://army-backend1.vercel.app/api/assignments');
+      const res = await fetch('https://my-backend-1lb6.onrender.com/api/assignments');
       const data = await res.json();
       setAssignments(data);
     } catch (err) {
