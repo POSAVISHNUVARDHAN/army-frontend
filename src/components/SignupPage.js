@@ -1,7 +1,5 @@
-// src/components/SignupPage.js
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import './SignupPage.css';
 
 export default function SignupPage() {
   const [form, setForm] = useState({
@@ -58,62 +56,109 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="signup-wrapper">
-      <form className="signup-form" onSubmit={handleSignup}>
-        <h2>Sign Up</h2>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-indigo-900 via-purple-900 to-pink-900 p-6">
+      <form
+        onSubmit={handleSignup}
+        className="bg-white bg-opacity-10 backdrop-blur-md rounded-3xl shadow-2xl max-w-md w-full p-10 border border-white border-opacity-20"
+      >
+        <h2 className="text-4xl font-extrabold text-white mb-8 text-center tracking-wide drop-shadow-lg">
+          Sign Up
+        </h2>
 
-        <label>Username</label>
+        <label className="block mb-1 text-white font-semibold tracking-wide" htmlFor="username">
+          Username
+        </label>
         <input
+          id="username"
           type="text"
           name="username"
           placeholder="Enter username"
           value={form.username}
           onChange={handleChange}
           required
+          className="w-full mb-5 px-5 py-3 rounded-xl bg-white bg-opacity-20 border border-white border-opacity-30 text-white placeholder-white/70 focus:outline-none focus:ring-4 focus:ring-purple-400 focus:ring-opacity-50 transition"
         />
 
-        <label>Email</label>
+        <label className="block mb-1 text-white font-semibold tracking-wide" htmlFor="email">
+          Email
+        </label>
         <input
+          id="email"
           type="email"
           name="email"
           placeholder="Enter email"
           value={form.email}
           onChange={handleChange}
           required
+          className="w-full mb-5 px-5 py-3 rounded-xl bg-white bg-opacity-20 border border-white border-opacity-30 text-white placeholder-white/70 focus:outline-none focus:ring-4 focus:ring-purple-400 focus:ring-opacity-50 transition"
         />
 
-        <label>Password</label>
+        <label className="block mb-1 text-white font-semibold tracking-wide" htmlFor="password">
+          Password
+        </label>
         <input
+          id="password"
           type="password"
           name="password"
           placeholder="Enter password"
           value={form.password}
           onChange={handleChange}
           required
+          className="w-full mb-5 px-5 py-3 rounded-xl bg-white bg-opacity-20 border border-white border-opacity-30 text-white placeholder-white/70 focus:outline-none focus:ring-4 focus:ring-purple-400 focus:ring-opacity-50 transition"
         />
 
-        <label>Confirm Password</label>
+        <label
+          className="block mb-1 text-white font-semibold tracking-wide"
+          htmlFor="confirmPassword"
+        >
+          Confirm Password
+        </label>
         <input
+          id="confirmPassword"
           type="password"
           name="confirmPassword"
           placeholder="Confirm password"
           value={form.confirmPassword}
           onChange={handleChange}
           required
+          className="w-full mb-5 px-5 py-3 rounded-xl bg-white bg-opacity-20 border border-white border-opacity-30 text-white placeholder-white/70 focus:outline-none focus:ring-4 focus:ring-purple-400 focus:ring-opacity-50 transition"
         />
 
-        <label>Role</label>
-        <select name="role" value={form.role} onChange={handleChange} required>
-          <option value="Admin">Admin</option>
-          <option value="Base Commissioner">Base Commissioner</option>
-          <option value="Logistic Officer">Logistic Officer</option>
+        <label className="block mb-1 text-white font-semibold tracking-wide" htmlFor="role">
+          Role
+        </label>
+        <select
+          id="role"
+          name="role"
+          value={form.role}
+          onChange={handleChange}
+          required
+          className="w-full mb-8 px-5 py-3 rounded-xl bg-white bg-opacity-20 border border-white border-opacity-30 text-white placeholder-white/70 focus:outline-none focus:ring-4 focus:ring-purple-400 focus:ring-opacity-50 transition"
+        >
+          <option className="text-black" value="Admin">
+            Admin
+          </option>
+          <option className="text-black" value="Base Commissioner">
+            Base Commissioner
+          </option>
+          <option className="text-black" value="Logistic Officer">
+            Logistic Officer
+          </option>
         </select>
 
-        <button type="submit" className="btn-signup">Sign Up</button>
+        <button
+          type="submit"
+          className="w-full py-3 rounded-xl bg-gradient-to-r from-purple-500 via-pink-600 to-red-500 text-white font-extrabold text-lg tracking-wide shadow-lg shadow-pink-500/50 hover:shadow-pink-700/80 transition duration-300 transform hover:-translate-y-0.5"
+        >
+          Sign Up
+        </button>
 
-        <p style={{ marginTop: '1rem', textAlign: 'center' }}>
+        <p className="mt-6 text-center text-white/80 font-semibold tracking-wide">
           Already have an account?{' '}
-          <Link to="/login" style={{ color: '#764ba2', fontWeight: 'bold' }}>
+          <Link
+            to="/login"
+            className="text-pink-400 hover:text-pink-600 font-bold underline transition duration-200"
+          >
             Login
           </Link>
         </p>

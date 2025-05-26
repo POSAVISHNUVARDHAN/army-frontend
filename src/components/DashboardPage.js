@@ -8,7 +8,6 @@ export default function Dashboard() {
   const [assignments, setAssignments] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
 
-  // Fetch functions, replace URLs with your backend API
   const fetchPurchases = async () => {
     try {
       const res = await fetch('http://localhost:5000/api/purchases');
@@ -18,6 +17,7 @@ export default function Dashboard() {
       console.error(err);
     }
   };
+
   const fetchTransferIn = async () => {
     try {
       const res = await fetch('http://localhost:5000/api/transferin');
@@ -27,6 +27,7 @@ export default function Dashboard() {
       console.error(err);
     }
   };
+
   const fetchTransferOut = async () => {
     try {
       const res = await fetch('http://localhost:5000/api/transferout');
@@ -36,6 +37,7 @@ export default function Dashboard() {
       console.error(err);
     }
   };
+
   const fetchAssignments = async () => {
     try {
       const res = await fetch('http://localhost:5000/api/assignments');
@@ -46,54 +48,44 @@ export default function Dashboard() {
     }
   };
 
-  // For now opening balance fixed to 0 or fetch your opening balance here if available
   useEffect(() => {
-    // setOpeningBalance(100); // example fixed opening balance
-    setOpeningBalance(0); 
+    setOpeningBalance(0);
     fetchPurchases();
     fetchTransferIn();
     fetchTransferOut();
     fetchAssignments();
   }, []);
 
-  // Calculate totals
   const totalPurchases = purchases.reduce((sum, item) => sum + (item.quantity || 0), 0);
   const totalTransferIn = transferIn.reduce((sum, item) => sum + (item.quantity || 0), 0);
   const totalTransferOut = transferOut.reduce((sum, item) => sum + (item.quantity || 0), 0);
 
   const netMovement = totalPurchases + totalTransferIn - totalTransferOut;
-
   const assignedCount = assignments.length;
   const expendedCount = assignments.filter(a => a.status === 'Expended').length;
-
   const closingBalance = openingBalance + netMovement - assignedCount;
 
   return (
-    <div style={{ maxWidth: 900, margin: '40px auto', fontFamily: 'Segoe UI, Tahoma, Geneva, Verdana, sans-serif' }}>
-      <h2 style={{ textAlign: 'center', marginBottom: 30 }}>Asset Dashboard</h2>
-      
-      <div style={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap', gap: '20px' }}>
-        <MetricCard label="Opening Balance" value={openingBalance} color="#007bff" />
-        <MetricCard
-          label="Closing Balance"
-          value={closingBalance}
-          color="#28a745"
-        />
+    <div className="max-w-6xl mx-auto p-6 font-sans">
+      <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">Military Asset Dashboard</h2>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        <MetricCard label="Opening Balance" value={openingBalance} color="bg-blue-600" />
+        <MetricCard label="Closing Balance" value={closingBalance} color="bg-green-600" />
         <MetricCard
           label="Net Movement"
           value={netMovement}
-          color="#17a2b8"
+          color="bg-cyan-700"
           clickable
           onClick={() => setShowPopup(true)}
         />
-        <MetricCard label="Assigned Assets" value={assignedCount} color="#ffc107" />
-        <MetricCard label="Expended Assets" value={expendedCount} color="#dc3545" />
+        <MetricCard label="Assigned Assets" value={assignedCount} color="bg-yellow-500" />
+        <MetricCard label="Expended Assets" value={expendedCount} color="bg-red-600" />
       </div>
 
       {showPopup && (
         <Popup onClose={() => setShowPopup(false)}>
-          <h3>Net Movement Details</h3>
-
+          <h3 className="text-xl font-bold mb-4 text-gray-700">Net Movement Details</h3>
           <SectionTable title="Purchases" data={purchases} />
           <SectionTable title="Transfer In" data={transferIn} />
           <SectionTable title="Transfer Out" data={transferOut} />
@@ -107,22 +99,12 @@ function MetricCard({ label, value, color, clickable, onClick }) {
   return (
     <div
       onClick={clickable ? onClick : undefined}
-      style={{
-        background: '#f8f9fa',
-        padding: '25px 40px',
-        borderRadius: 8,
-        boxShadow: `0 0 10px ${color}33`,
-        minWidth: 160,
-        textAlign: 'center',
-        userSelect: 'none',
-        cursor: clickable ? 'pointer' : 'default',
-        transition: 'transform 0.2s',
-      }}
-      onMouseEnter={e => clickable && (e.currentTarget.style.transform = 'scale(1.05)')}
-      onMouseLeave={e => clickable && (e.currentTarget.style.transform = 'scale(1)')}
+      className={`p-6 rounded-xl shadow-md text-white ${color} transition-transform duration-200 hover:scale-105 ${
+        clickable ? 'cursor-pointer' : ''
+      }`}
     >
-      <h3 style={{ margin: 0, fontSize: 22, color }}>{value}</h3>
-      <p style={{ margin: 0, fontWeight: '600', color: '#333' }}>{label}</p>
+      <div className="text-2xl font-bold">{value}</div>
+      <div className="text-sm mt-2 font-semibold tracking-wide">{label}</div>
     </div>
   );
 }
@@ -130,41 +112,16 @@ function MetricCard({ label, value, color, clickable, onClick }) {
 function Popup({ children, onClose }) {
   return (
     <div
-      style={{
-        position: 'fixed',
-        top: 0, left: 0, right: 0, bottom: 0,
-        background: 'rgba(0,0,0,0.5)',
-        display: 'flex', justifyContent: 'center', alignItems: 'center',
-        zIndex: 1000,
-      }}
+      className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50"
       onClick={onClose}
     >
       <div
-        onClick={e => e.stopPropagation()}
-        style={{
-          background: 'white',
-          padding: 20,
-          borderRadius: 8,
-          width: '80%',
-          maxHeight: '80%',
-          overflowY: 'auto',
-          boxShadow: '0 0 15px #00000066',
-        }}
+        onClick={(e) => e.stopPropagation()}
+        className="bg-white p-6 rounded-lg w-11/12 max-w-4xl max-h-[90vh] overflow-y-auto shadow-xl relative"
       >
         <button
           onClick={onClose}
-          style={{
-            float: 'right',
-            background: 'red',
-            color: 'white',
-            border: 'none',
-            borderRadius: '50%',
-            width: 28,
-            height: 28,
-            fontWeight: 'bold',
-            cursor: 'pointer',
-          }}
-          aria-label="Close"
+          className="absolute top-2 right-2 text-white bg-red-600 hover:bg-red-700 rounded-full w-8 h-8 flex items-center justify-center font-bold"
         >
           &times;
         </button>
@@ -175,31 +132,31 @@ function Popup({ children, onClose }) {
 }
 
 function SectionTable({ title, data }) {
-  if (!data || data.length === 0) return <p>{title}: No data available.</p>;
+  if (!data || data.length === 0) return <p className="text-gray-500 mb-4">{title}: No data available.</p>;
 
   return (
-    <div style={{ marginBottom: 20 }}>
-      <h4>{title}</h4>
-      <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: 8 }}>
-        <thead>
-          <tr style={{ backgroundColor: '#e9ecef' }}>
-            {Object.keys(data[0]).map((key) => (
-              <th key={key} style={{ padding: 8, border: '1px solid #dee2e6', textAlign: 'left' }}>
-                {key.charAt(0).toUpperCase() + key.slice(1)}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((item, idx) => (
-            <tr key={idx} style={{ borderBottom: '1px solid #dee2e6' }}>
-              {Object.values(item).map((val, i) => (
-                <td key={i} style={{ padding: 8 }}>{val?.toString()}</td>
+    <div className="mb-6">
+      <h4 className="text-lg font-semibold text-gray-700 mb-2">{title}</h4>
+      <div className="overflow-x-auto">
+        <table className="w-full border border-gray-300 rounded shadow-sm">
+          <thead className="bg-gray-200 text-gray-700 text-sm">
+            <tr>
+              {Object.keys(data[0]).map((key) => (
+                <th key={key} className="px-4 py-2 border">{key.charAt(0).toUpperCase() + key.slice(1)}</th>
               ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {data.map((item, idx) => (
+              <tr key={idx} className="hover:bg-gray-50 text-sm">
+                {Object.values(item).map((val, i) => (
+                  <td key={i} className="px-4 py-2 border">{val?.toString()}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

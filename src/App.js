@@ -9,7 +9,8 @@ import PurchasesPage from './components/PurchasesPage';
 import TransfersPage from './components/TransfersPage'; 
 
 import DashboardPage from './components/DashboardPage';
-import HomePage from './components/HomePage';
+import HomePage from './components/HomePage'; // or './App.css' whatever you configured
+import './App.css';  // or './index.css' whatever you configured
 
 function App() {
   return (

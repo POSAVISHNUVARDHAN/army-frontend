@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import './TransfersPage.css';
 
 export default function TransfersPage() {
   const [form, setForm] = useState({
@@ -10,7 +9,7 @@ export default function TransfersPage() {
   });
 
   const [transfers, setTransfers] = useState([]);
-  const [assets, setAssets] = useState([]); // purchased assets for dropdown
+  const [assets, setAssets] = useState([]);
   const [loadingTransfers, setLoadingTransfers] = useState(false);
   const [loadingAssets, setLoadingAssets] = useState(false);
   const [error, setError] = useState('');
@@ -37,9 +36,8 @@ export default function TransfersPage() {
   const fetchAssets = async () => {
     setLoadingAssets(true);
     try {
-      const response = await fetch('http://localhost:5000/api/purchases'); // endpoint that returns purchased assets
+      const response = await fetch('http://localhost:5000/api/purchases');
       const data = await response.json();
-      // Extract unique equipment types
       const uniqueAssets = [...new Set(data.map(p => p.equipment_type))];
       setAssets(uniqueAssets);
       setError('');
@@ -90,14 +88,23 @@ export default function TransfersPage() {
   };
 
   return (
-    <div className="transfers-container">
-      <h2>Asset Transfers Between Bases</h2>
+    <div className="max-w-5xl mx-auto px-4 py-8">
+      <h2 className="text-3xl font-bold text-center text-blue-800 mb-6">Asset Transfers Between Bases</h2>
 
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {error && <p className="text-red-600 text-center mb-4">{error}</p>}
 
-      <form onSubmit={handleTransfer} className="transfer-form">
-        <select name="asset" value={form.asset} onChange={handleChange} disabled={loadingAssets}>
-          <option value="">Select Asset (Purchased Equipment)</option>
+      <form
+        onSubmit={handleTransfer}
+        className="grid md:grid-cols-5 sm:grid-cols-2 gap-4 mb-8 bg-white p-6 rounded-lg shadow-lg"
+      >
+        <select
+          name="asset"
+          value={form.asset}
+          onChange={handleChange}
+          disabled={loadingAssets}
+          className="border rounded px-3 py-2 col-span-1"
+        >
+          <option value="">Select Asset</option>
           {assets.map((a, idx) => (
             <option key={idx} value={a}>
               {a}
@@ -111,6 +118,7 @@ export default function TransfersPage() {
           placeholder="From base"
           value={form.from_base}
           onChange={handleChange}
+          className="border rounded px-3 py-2 col-span-1"
         />
         <input
           type="text"
@@ -118,43 +126,58 @@ export default function TransfersPage() {
           placeholder="To base"
           value={form.to_base}
           onChange={handleChange}
+          className="border rounded px-3 py-2 col-span-1"
         />
-        <input type="date" name="date" value={form.date} onChange={handleChange} />
-        <button type="submit" disabled={!form.asset || !form.from_base || !form.to_base || !form.date}>
+        <input
+          type="date"
+          name="date"
+          value={form.date}
+          onChange={handleChange}
+          className="border rounded px-3 py-2 col-span-1"
+        />
+        <button
+          type="submit"
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition col-span-1"
+        >
           Transfer
         </button>
       </form>
 
-      <h3>Transfer History</h3>
+      <h3 className="text-2xl font-semibold text-gray-800 mb-4">Transfer History</h3>
+
       {loadingTransfers ? (
-        <p>Loading transfers...</p>
+        <p className="text-center text-gray-600">Loading transfers...</p>
       ) : (
-        <table className="transfers-table">
-          <thead>
-            <tr>
-              <th>Asset</th>
-              <th>From Base</th>
-              <th>To Base</th>
-              <th>Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            {transfers.length > 0 ? (
-              transfers.map((item, index) => (
-                <tr key={index}>
-                  <td>{item.asset}</td>
-                  <td>{item.from_base}</td>
-                  <td>{item.to_base}</td>
-                  <td>{formatDate(item.date)}</td>
-                </tr>
-              ))
-            ) : (
+        <div className="overflow-x-auto rounded-lg shadow-md">
+          <table className="w-full text-sm text-left text-gray-700">
+            <thead className="bg-blue-100 text-gray-800 uppercase">
               <tr>
-                <td colSpan="4">No transfers found.</td>
+                <th className="px-4 py-3">Asset</th>
+                <th className="px-4 py-3">From Base</th>
+                <th className="px-4 py-3">To Base</th>
+                <th className="px-4 py-3">Date</th>
               </tr>
-            )}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {transfers.length > 0 ? (
+                transfers.map((item, index) => (
+                  <tr key={index} className="bg-white border-b hover:bg-gray-50">
+                    <td className="px-4 py-3">{item.asset}</td>
+                    <td className="px-4 py-3">{item.from_base}</td>
+                    <td className="px-4 py-3">{item.to_base}</td>
+                    <td className="px-4 py-3">{formatDate(item.date)}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="4" className="text-center px-4 py-4 text-gray-500">
+                    No transfers found.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );

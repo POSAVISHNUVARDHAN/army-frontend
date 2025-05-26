@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import './AssignmentsPage.css';
 
 export default function AssignmentsPage() {
   const [form, setForm] = useState({ asset: '', personnel: '' });
   const [assignments, setAssignments] = useState([]);
   const [assets, setAssets] = useState([]);
 
-  // Fetch assignments
   const fetchAssignments = async () => {
     try {
       const res = await fetch('http://localhost:5000/api/assignments');
@@ -17,7 +15,6 @@ export default function AssignmentsPage() {
     }
   };
 
-  // Fetch assets from purchases
   const fetchAssets = async () => {
     try {
       const res = await fetch('http://localhost:5000/api/purchases');
@@ -63,7 +60,6 @@ export default function AssignmentsPage() {
 
   const handleDelete = async asset => {
     if (!window.confirm(`Delete assignment for asset "${asset}"?`)) return;
-
     try {
       const res = await fetch(`http://localhost:5000/api/assignments/${encodeURIComponent(asset)}`, {
         method: 'DELETE',
@@ -81,7 +77,6 @@ export default function AssignmentsPage() {
 
   const handleExpended = async asset => {
     if (!window.confirm(`Mark asset "${asset}" as Expended?`)) return;
-
     try {
       const res = await fetch('http://localhost:5000/api/assignments/expended', {
         method: 'PUT',
@@ -89,7 +84,6 @@ export default function AssignmentsPage() {
         body: JSON.stringify({ asset }),
       });
       const data = await res.json();
-
       if (res.ok) {
         fetchAssignments();
       } else {
@@ -101,22 +95,20 @@ export default function AssignmentsPage() {
   };
 
   return (
-    <div className="assignments-container">
-      <h2>Assign Assets to Personnel</h2>
-      <form onSubmit={handleAssign} className="assignment-form">
+    <div className="p-6 max-w-6xl mx-auto bg-white rounded-lg shadow-md">
+      <h2 className="text-2xl font-bold mb-4 text-blue-700">Assign Assets to Personnel</h2>
+
+      <form onSubmit={handleAssign} className="flex flex-col md:flex-row items-center gap-4 mb-6">
         <select
           name="asset"
           value={form.asset}
           onChange={handleChange}
           required
+          className="w-full md:w-1/3 p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
         >
-          <option value="" disabled>
-            Select Asset
-          </option>
+          <option value="" disabled>Select Asset</option>
           {assets.map(asset => (
-            <option key={asset} value={asset}>
-              {asset}
-            </option>
+            <option key={asset} value={asset}>{asset}</option>
           ))}
         </select>
 
@@ -127,52 +119,65 @@ export default function AssignmentsPage() {
           value={form.personnel}
           onChange={handleChange}
           required
+          className="w-full md:w-1/3 p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
         />
 
-        <button type="submit">Assign</button>
+        <button
+          type="submit"
+          className="w-full md:w-auto px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+        >
+          Assign
+        </button>
       </form>
 
-      <h3>Current Assignments</h3>
-      <table className="assignments-table">
-        <thead>
-          <tr>
-            <th>Asset</th>
-            <th>Personnel</th>
-            <th>Status</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {assignments.length === 0 ? (
+      <h3 className="text-xl font-semibold mb-3 text-gray-800">Current Assignments</h3>
+
+      <div className="overflow-x-auto">
+        <table className="w-full table-auto border-collapse rounded-lg overflow-hidden">
+          <thead className="bg-gray-100 text-gray-700">
             <tr>
-              <td colSpan="4">No assignments found.</td>
+              <th className="px-4 py-2 text-left">Asset</th>
+              <th className="px-4 py-2 text-left">Personnel</th>
+              <th className="px-4 py-2 text-left">Status</th>
+              <th className="px-4 py-2 text-left">Action</th>
             </tr>
-          ) : (
-            assignments.map((assignment, idx) => (
-              <tr key={idx}>
-                <td>{assignment.asset}</td>
-                <td>{assignment.personnel}</td>
-                <td>{assignment.status}</td>
-                <td>
-                  <button
-                    onClick={() => handleExpended(assignment.asset)}
-                    style={{ color: 'orange', marginRight: '10px' }}
-                    disabled={assignment.status === 'Expended'}
-                  >
-                    Expended
-                  </button>
-                  <button
-                    onClick={() => handleDelete(assignment.asset)}
-                    style={{ color: 'red' }}
-                  >
-                    Delete
-                  </button>
-                </td>
+          </thead>
+          <tbody>
+            {assignments.length === 0 ? (
+              <tr>
+                <td colSpan="4" className="text-center py-4 text-gray-500">No assignments found.</td>
               </tr>
-            ))
-          )}
-        </tbody>
-      </table>
+            ) : (
+              assignments.map((assignment, idx) => (
+                <tr key={idx} className="border-t hover:bg-gray-50">
+                  <td className="px-4 py-2">{assignment.asset}</td>
+                  <td className="px-4 py-2">{assignment.personnel}</td>
+                  <td className="px-4 py-2">
+                    <span className={`px-2 py-1 rounded text-sm font-medium ${assignment.status === 'Expended' ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600'}`}>
+                      {assignment.status}
+                    </span>
+                  </td>
+                  <td className="px-4 py-2">
+                    <button
+                      onClick={() => handleExpended(assignment.asset)}
+                      className="text-orange-500 hover:text-orange-700 mr-3 disabled:opacity-50"
+                      disabled={assignment.status === 'Expended'}
+                    >
+                      Expended
+                    </button>
+                    <button
+                      onClick={() => handleDelete(assignment.asset)}
+                      className="text-red-500 hover:text-red-700"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
