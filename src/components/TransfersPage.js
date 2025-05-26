@@ -22,7 +22,7 @@ export default function TransfersPage() {
   const fetchTransfers = async () => {
     setLoadingTransfers(true);
     try {
-      const response = await fetch('https://my-backend-1lb6.onrender.com/api/transfers');
+      const response = await fetch('https://army-backend1.vercel.app/api/transfers');
       const data = await response.json();
       setTransfers(data);
       setError('');
@@ -36,7 +36,7 @@ export default function TransfersPage() {
   const fetchAssets = async () => {
     setLoadingAssets(true);
     try {
-      const response = await fetch('https://my-backend-1lb6.onrender.com/api/purchases');
+      const response = await fetch('https://army-backend1.vercel.app/api/purchases');
       const data = await response.json();
       const uniqueAssets = [...new Set(data.map(p => p.equipment_type))];
       setAssets(uniqueAssets);
@@ -62,7 +62,7 @@ export default function TransfersPage() {
     }
 
     try {
-      const response = await fetch('https://my-backend-1lb6.onrender.com/api/transfers', {
+      const response = await fetch('https://army-backend1.vercel.app/api/transfers', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ asset, from_base, to_base, date }),
